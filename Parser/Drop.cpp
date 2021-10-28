@@ -3,7 +3,7 @@
  */
 
 #include <string>
-#include "Item.h"
+#include "../Item.h"
 
  struct Drop: public Item {
   const float chance_mode_easy;

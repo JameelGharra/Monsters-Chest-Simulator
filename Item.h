@@ -9,5 +9,7 @@ struct Item {
     const std::string name;
     int quantity;
 
-    Item(std::string name):name(std::move(name)) {}
+    Item(std::string name):name(std::move(name)) {
+
+    }
 };

@@ -4,7 +4,7 @@
  */
 
 #include <set>
-#include "Drop.cpp"
+#include "../Parser/Drop.cpp"
 
 struct Monster {
     bool is_enraged;
@@ -23,5 +23,5 @@ struct Monster {
         is_main_drops (main),
         is_unique_drops (unique)
     {}
-    virtual std::set<Drop> roll_drop() = 0;
+    virtual std::set<Item> roll_drop() = 0;
 };

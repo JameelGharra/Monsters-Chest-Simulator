@@ -1,6 +1,6 @@
 /**
  * Runner.cpp: will be responsible of executing the whole program and connect
- * each component and module with each other to perform the purpose of the
+ * each component & module with each other to perform the purpose of the
  * program.
  */
 
@@ -12,7 +12,7 @@ class Runner {
 
 int main() {
 
-  std::cout << "Test" << std::endl;
+  std::cout << "Running the chest simulator.." << std::endl;
   return EXIT_SUCCESS;
 
 }

@@ -5,7 +5,7 @@
 
 #include "Monster.h"
  class Araxxi: public Monster {
-  std::set<Drop> roll_drop() override {
+  std::set<Item> roll_drop() override {
 
   }
  };
