@@ -5,14 +5,16 @@
  */
 
 #include <iostream>
-
-class Runner {
-
-};
+#include "Parser/DropsLoader.h"
 
 int main() {
-
   std::cout << "Running the chest simulator.." << std::endl;
+  try
+    {
+      DropsLoader::get_instance ();
+    }
+    catch(std::bad_alloc &exception) {
+      std::cerr << "Error: bad memory allocation." << std::endl;
+    }
   return EXIT_SUCCESS;
-
 }

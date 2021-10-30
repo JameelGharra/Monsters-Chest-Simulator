@@ -4,7 +4,7 @@
 
 #include "Monster.h"
 #include "../Parser/DropsLoader.h"
-#include "Araxxi.cpp"
+//#include "Araxxi.cpp"
 
 class MonsterFactory {
  private:
@@ -19,13 +19,20 @@ class MonsterFactory {
     return loader.MONSTER_UNKNOWN;
   }
  public:
-  explicit MonsterFactory (const std::string &monster_name)
+  explicit MonsterFactory (const std::string &monster_name,
+                           Monster &current_monster)
   {
     switch (map_monster (monster_name))
       {
-        case DropsLoader::MONSTER_ARAXXI {
-          
-        }
+        case DropsLoader::MONSTER_ARAXXI:
+          {
+        //    current_monster = Araxxi();
+            break;
+          }
+        case DropsLoader::MONSTER_UNKNOWN:
+          {
+
+          }
       }
   }
 };

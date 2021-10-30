@@ -3,6 +3,9 @@
  * mechanics.
  */
 
+#ifndef MONSTER_H
+#define MONSTER_H
+
 #include <set>
 #include "../Parser/Drop.cpp"
 
@@ -25,3 +28,5 @@ struct Monster {
     {}
     virtual std::set<Item> roll_drop() = 0;
 };
+
+#endif

@@ -10,17 +10,17 @@
 #include <set>
 #include <vector>
 #include <fstream>
-#include "../Monsters/Monster.h"
+//#include "../Monsters/Monster.h"
 
 class DropsLoader {
  private:
-  const static DropsLoader instance;
+  const static DropsLoader *instance;
   const std::filesystem::path current_directory;
   const std::string msg_bad_alloc = "Error: Bad memory allocation.";
   const std::string file_prefix = "Drops_";
-
-  const static std::set<Monster> available_monsters;
+  std::ifstream file_reader;
   DropsLoader ();
+  ~DropsLoader();
 
  public:
   enum preloaded_monsters_id {
