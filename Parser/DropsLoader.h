@@ -10,6 +10,7 @@
 #include <set>
 #include <vector>
 #include <fstream>
+#include <regex>
 //#include "../Monsters/Monster.h"
 
 class DropsLoader {
@@ -21,6 +22,7 @@ class DropsLoader {
   std::ifstream file_reader;
   DropsLoader ();
   ~DropsLoader();
+  static void retrieve_drop_data(const std::string &line);
 
  public:
   enum preloaded_monsters_id {

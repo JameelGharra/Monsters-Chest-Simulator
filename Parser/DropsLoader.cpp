@@ -2,6 +2,7 @@
 #include "DropsLoader.h"
 
 const DropsLoader *DropsLoader::instance = nullptr;
+
 /**
  * analyzes the files that are relevant to be drops
  */
@@ -23,7 +24,8 @@ DropsLoader::DropsLoader ()
           file_reader.open (entry.path());
           std::string line;
           if(file_reader.is_open()) {
-            while(getline (file_reader, line)) {
+            while(getline (file_reader, line))
+              retrieve_drop_data(line);
               std::cout << line << std::endl;
             }
           }
@@ -40,4 +42,12 @@ const DropsLoader &DropsLoader::get_instance ()
 }
 DropsLoader::~DropsLoader() {
   delete instance;
+}
+void DropsLoader::retrieve_drop_data (const std::string &line) {
+  std::regex drop_regex("(?:[@$]) (?:\\w+) (?:[0-5]) (?:[0-9]+) (?:[1-9])/(?:[1-9][0-9]*)");
+  std::smatch matcher;
+  if(std::regex_search (line, matcher, drop_regex)) {
+    return ;
+  }
+  throw std::invalid_argument("Error: bad drop line in the drop file.");
 }
