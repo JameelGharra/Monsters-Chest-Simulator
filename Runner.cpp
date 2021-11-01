@@ -16,5 +16,8 @@ int main() {
     catch(std::bad_alloc &exception) {
       std::cerr << "Error: bad memory allocation." << std::endl;
     }
+    catch(std::invalid_argument &exception) {
+      std::cerr << exception.what() << std::endl;
+    }
   return EXIT_SUCCESS;
 }
