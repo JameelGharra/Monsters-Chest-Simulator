@@ -1,7 +1,7 @@
 #include <iostream>
 #include "DropsLoader.h"
 
-DropsLoader *const DropsLoader::instance = nullptr;
+DropsLoader *DropsLoader::instance = nullptr;
 
 /**
  * analyzes the files that are relevant to be drops
@@ -58,12 +58,12 @@ void DropsLoader::load_monster_drops ()
     {
       get_monster_name (entry, monster_name);
       retrieve_monster_drops (entry, drop_line);
-      
+
     }
 }
 void DropsLoader::retrieve_drop_data (const std::string &line)
 {
-  std::regex drop_regex ("([@$]) (\\w+) ([1-3]) ([1-9]{1}[0-9]*) ([1-9]{1}[0-9]*)\\/([1-9][0-9]*)");
+  std::regex drop_regex ("([@$]) (\\w+) ([1-4]) ([1-9]{1}[0-9]*) ([1-9]{1}[0-9]*)\\/([1-9][0-9]*)");
   std::smatch matcher;
   if (std::regex_search (line, matcher, drop_regex))
     {
@@ -71,6 +71,7 @@ void DropsLoader::retrieve_drop_data (const std::string &line)
         {
           instance->arr_regex_drop.push_back (matcher.str (i));
         }
+        parse_regex_groups();
       return;
     }
   throw std::invalid_argument ("Error: bad drop line in the drop file.");
@@ -78,4 +79,23 @@ void DropsLoader::retrieve_drop_data (const std::string &line)
 void DropsLoader::parse_regex_groups ()
 {
   //@ Clean_Avantoe 1 10 10231/20
+  for(auto i = 0; i < instance->arr_regex_drop.size(); ++i) {
+    switch(i) {
+      case BOSS_MODE: {
+
+        break;
+      }
+      case DROP_NAME: {
+
+        break;
+      }
+    }
+
+     /* BOSS_MODE,
+          DROP_NAME,
+          TABLE_ID,
+          DROP_QUANTITY,
+          DROP_CHANCE_TOP,
+          DROP_CHANCE_DOWN*/
+  }
 }

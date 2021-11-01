@@ -15,7 +15,7 @@
 
 class DropsLoader {
  private:
-  static DropsLoader* const instance;
+  static DropsLoader* instance;
   const std::filesystem::path current_directory;
   const std::string msg_bad_alloc = "Error: Bad memory allocation.";
   const std::string file_prefix = "Drops_";
