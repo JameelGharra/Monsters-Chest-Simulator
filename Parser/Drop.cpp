@@ -3,15 +3,16 @@
  */
 
 #include <string>
-#include "../Item.h"
 
- struct Drop: public Item {
-  const float chance_mode_easy;
-  const float chance_mode_hard;
+struct Drop {
+    const std::string name;
+    const float chance;
+    const int quantity;
 
-  Drop (const std::string &name, const float &chance_easy, const float &chance_hard) :
-      Item(name),
-      chance_mode_easy (chance_easy),
-      chance_mode_hard (chance_hard)
-  {}
+    Drop(std::string name_, const int &quantity_, const float &chance_):
+    name(std::move(name_)), chance(chance_), quantity(quantity_) {
+    }
+    bool operator<(const Drop &other) const {
+      return this->name != other.name;
+    }
 };

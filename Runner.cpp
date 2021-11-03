@@ -11,7 +11,8 @@ int main() {
   std::cout << "Running the chest simulator.." << std::endl;
   try
     {
-      DropsLoader::get_instance ();
+      DropsLoader::get_instance();
+      DropsLoader::load_monster_drops();
     }
     catch(std::bad_alloc &exception) {
       std::cerr << "Error: bad memory allocation." << std::endl;
