@@ -1,6 +1,8 @@
 #include <iostream>
 #include "DropsLoader.h"
 
+#define DEBUG_VERBOSE
+
 DropsLoader *DropsLoader::instance = nullptr;
 
 /**
@@ -37,6 +39,7 @@ void DropsLoader::get_monster_name (const std::filesystem::directory_entry
   monster_name = file_name.substr (0, prefix_under_score + 1);
 
 }
+#if defined DEBUG_VERBOSE
 void debug_print_drops ()
 {
   int counter = 1;
@@ -47,13 +50,14 @@ void debug_print_drops ()
       for (const auto &element : (**ptr))
         {
           std::cout << "name: " << element.name << " - quantity min: "
-                    << element.max_quantity << " - quantity max: "
-                    << element.min_quantity << " - chance: " << element.chance
+                    << element.min_quantity << " - quantity max: "
+                    << element.max_quantity << " - chance: " << element.chance
                     << std::endl;
         }
       ++counter;
     }
 }
+#endif
 void
 DropsLoader::retrieve_monster_drops (const std::filesystem::directory_entry &entry, std::string &drop_line)
 {
@@ -68,7 +72,9 @@ DropsLoader::retrieve_monster_drops (const std::filesystem::directory_entry &ent
         {
           retrieve_drop_data (drop_line);
         }
+#if defined DEBUG_VERBOSE
       debug_print_drops ();
+#endif
     }
 }
 void DropsLoader::load_monster_drops ()
@@ -101,7 +107,9 @@ void DropsLoader::retrieve_drop_data (const std::string &line)
       parse_regex_groups ();
       return;
     }
+#if defined DEBUG_VERBOSE
     std::cout << line << std::endl;
+#endif
   throw std::invalid_argument ("Error: bad drop line in the drop file.");
 }
 void DropsLoader::filter_under_scores (std::string &str)
