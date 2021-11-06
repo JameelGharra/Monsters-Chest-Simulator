@@ -90,7 +90,7 @@ void DropsLoader::retrieve_drop_data (const std::string &line)
     {
       instance->unparsed_regex_results.clear ();
     }
-  std::regex drop_regex ("^(\\w+) ([1-4]) (?:([1-9]{1}[0-9]*)(?:[-]([1-9]{1}[0-9]*))?) ([1-9]{1}[0-9]*)\\/([1-9][0-9]*)$");
+  std::regex drop_regex (R"(^(\w+) ([1-4]) (?:([1-9]{1}[0-9]*)(?:[-]([1-9]{1}[0-9]*))?) ([1-9]{1}[0-9]*)\/([1-9][0-9]*)\s*$)");
   std::smatch matcher;
   if (std::regex_search (line, matcher, drop_regex))
     {
@@ -101,6 +101,7 @@ void DropsLoader::retrieve_drop_data (const std::string &line)
       parse_regex_groups ();
       return;
     }
+    std::cout << line << std::endl;
   throw std::invalid_argument ("Error: bad drop line in the drop file.");
 }
 void DropsLoader::filter_under_scores (std::string &str)
