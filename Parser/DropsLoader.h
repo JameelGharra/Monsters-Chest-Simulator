@@ -20,7 +20,7 @@ class DropsLoader {
   const std::string msg_bad_alloc = "Error: Bad memory allocation.";
   const std::string file_prefix = "Drops_";
   std::ifstream file_reader;
-  std::vector<std::string> arr_regex_drop;
+  std::vector<std::string> unparsed_regex_results;
   inline static std::set<Drop>* current_guaranteed_drops = nullptr;
   inline static std::set<Drop>* current_food_drops = nullptr;
   inline static std::set<Drop>* current_main_drops = nullptr;
@@ -29,6 +29,7 @@ class DropsLoader {
     &current_guaranteed_drops, &current_main_drops,
     &current_unique_drops, &current_food_drops
   };
+
   DropsLoader ();
   ~DropsLoader();
   static void filter_under_scores(std::string &str);
@@ -36,11 +37,12 @@ class DropsLoader {
   static void retrieve_monster_drops(const std::filesystem::directory_entry &entry, std::string &drop_line);
   static void retrieve_drop_data(const std::string &line);
   static void parse_regex_groups();
-
+  static void create_drop(const bool &is_ranged_quantity);
   enum DropRegex {
-      DROP_NAME,
+      DROP_NAME = 0,
       TABLE_ID,
-      DROP_QUANTITY,
+      DROP_QUANTITY_MIN,
+      DROP_QUANTITY_MAX,
       DROP_CHANCE_TOP,
       DROP_CHANCE_DOWN
   };

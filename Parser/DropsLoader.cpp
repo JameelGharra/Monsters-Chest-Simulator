@@ -37,17 +37,22 @@ void DropsLoader::get_monster_name (const std::filesystem::directory_entry
   monster_name = file_name.substr (0, prefix_under_score + 1);
 
 }
-void debug_print_drops() {
+void debug_print_drops ()
+{
   int counter = 1;
-  for(const auto &ptr : DropsLoader::drop_tables) {
-    if(!(*ptr)->empty())
-      std::cout << "Table #" << counter << std::endl;
-      for(const auto &element : (**ptr)) {
-        std::cout << "name: " << element.name << " - quantity: "
-        << element.quantity << " - chance: " << element.chance << std::endl;
-      }
+  for (const auto &ptr : DropsLoader::drop_tables)
+    {
+      if (!(*ptr)->empty ())
+        std::cout << "Table #" << counter << std::endl;
+      for (const auto &element : (**ptr))
+        {
+          std::cout << "name: " << element.name << " - quantity min: "
+                    << element.max_quantity << " - quantity max: "
+                    << element.min_quantity << " - chance: " << element.chance
+                    << std::endl;
+        }
       ++counter;
-  }
+    }
 }
 void
 DropsLoader::retrieve_monster_drops (const std::filesystem::directory_entry &entry, std::string &drop_line)
@@ -63,7 +68,7 @@ DropsLoader::retrieve_monster_drops (const std::filesystem::directory_entry &ent
         {
           retrieve_drop_data (drop_line);
         }
-        debug_print_drops();
+      debug_print_drops ();
     }
 }
 void DropsLoader::load_monster_drops ()
@@ -81,17 +86,17 @@ void DropsLoader::load_monster_drops ()
 }
 void DropsLoader::retrieve_drop_data (const std::string &line)
 {
-  if (!instance->arr_regex_drop.empty ())
+  if (!instance->unparsed_regex_results.empty ())
     {
-      instance->arr_regex_drop.clear ();
+      instance->unparsed_regex_results.clear ();
     }
-  std::regex drop_regex ("(\\w+) ([1-4]) ([1-9]{1}[0-9]*) ([1-9]{1}[0-9]*)\\/([1-9][0-9]*)");
+  std::regex drop_regex ("^(\\w+) ([1-4]) (?:([1-9]{1}[0-9]*)(?:[-]([1-9]{1}[0-9]*))?) ([1-9]{1}[0-9]*)\\/([1-9][0-9]*)$");
   std::smatch matcher;
   if (std::regex_search (line, matcher, drop_regex))
     {
       for (int i = 1; i < matcher.size (); ++i)
         {
-          instance->arr_regex_drop.push_back (matcher.str (i));
+          instance->unparsed_regex_results.push_back (matcher.str (i));
         }
       parse_regex_groups ();
       return;
@@ -106,15 +111,21 @@ void DropsLoader::filter_under_scores (std::string &str)
       str.replace (under_score_pos, 1, " ");
     }
 }
+void DropsLoader::create_drop (const bool &is_ranged_quantity)
+{
+  std::set<Drop> *table_set = *drop_tables[std::stoi (instance->unparsed_regex_results[TABLE_ID])];
+  std::vector<std::string> &matched_results = instance->unparsed_regex_results;
+  Drop generated_drop = Drop (matched_results[DROP_NAME],
+                              std::stoi (matched_results[DROP_QUANTITY_MIN]),
+                              std::stoi ((is_ranged_quantity)
+                                         ? (matched_results[DROP_QUANTITY_MAX])
+                                         : (matched_results[DROP_QUANTITY_MIN])),
+                              std::stof (instance->unparsed_regex_results[DROP_CHANCE_TOP])
+                              / std::stof (instance->unparsed_regex_results[DROP_CHANCE_DOWN]));
+  table_set->emplace (generated_drop);
+}
 void DropsLoader::parse_regex_groups ()
 {
-  filter_under_scores (instance->arr_regex_drop[DROP_NAME]);
-  (*drop_tables[std::stoi (instance->arr_regex_drop[TABLE_ID])])->emplace (
-      Drop (
-          instance->arr_regex_drop[DROP_NAME],
-          std::stoi (instance->arr_regex_drop[DROP_QUANTITY]),
-          std::stof (instance->arr_regex_drop[DROP_CHANCE_TOP])
-          / std::stof (instance->arr_regex_drop[DROP_CHANCE_DOWN])
-      ));
-  //Clean_Avantoe 1 10 10231/20
+  filter_under_scores (instance->unparsed_regex_results[DROP_NAME]);
+  create_drop (!instance->unparsed_regex_results[DROP_QUANTITY_MAX].empty ());
 }
