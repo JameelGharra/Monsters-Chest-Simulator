@@ -5,11 +5,12 @@
 
 DropsLoader *DropsLoader::instance = nullptr;
 
-/**
+/**+
  * analyzes the files that are relevant to be drops
  */
 DropsLoader::DropsLoader ()
-    : current_directory (std::filesystem::path (R"(C:\Users\jamee\Desktop\C++\Araxxi-Chest-Simulator\Monsters)"))
+    : current_directory (std::filesystem::path (R"(C:\Users\jamee\Desktop\C++\Araxxi-Chest-Simulator\Monsters)")),
+      drop_regex (R"(^(\w+) ([1-4]) (?:([1-9]{1}[0-9]*)(?:[-]([1-9]{1}[0-9]*))?) ([1-9]{1}[0-9]*)\/([1-9][0-9]*)\s*$)")
 {
 
 }
@@ -96,9 +97,8 @@ void DropsLoader::retrieve_drop_data (const std::string &line)
     {
       instance->unparsed_regex_results.clear ();
     }
-  std::regex drop_regex (R"(^(\w+) ([1-4]) (?:([1-9]{1}[0-9]*)(?:[-]([1-9]{1}[0-9]*))?) ([1-9]{1}[0-9]*)\/([1-9][0-9]*)\s*$)");
   std::smatch matcher;
-  if (std::regex_search (line, matcher, drop_regex))
+  if (std::regex_search (line, matcher, instance->drop_regex))
     {
       for (int i = 1; i < matcher.size (); ++i)
         {

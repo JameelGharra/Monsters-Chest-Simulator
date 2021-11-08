@@ -20,6 +20,7 @@ class DropsLoader {
   const std::string msg_bad_alloc = "Error: Bad memory allocation.";
   const std::string file_prefix = "Drops_";
   std::ifstream file_reader;
+  const std::regex drop_regex;
   std::vector<std::string> unparsed_regex_results;
   inline static std::set<Drop>* current_guaranteed_drops = nullptr;
   inline static std::set<Drop>* current_food_drops = nullptr;
