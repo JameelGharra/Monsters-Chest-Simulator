@@ -1,32 +1,31 @@
-#include <iostream>
-#include "DropsLoader.h"
+#include "MonstersLoader.h"
 
 #define DEBUG_VERBOSE
 
-DropsLoader *DropsLoader::instance = nullptr;
+MonstersLoader *MonstersLoader::instance = nullptr;
 
 /**+
  * analyzes the files that are relevant to be drops
  */
-DropsLoader::DropsLoader ()
+MonstersLoader::MonstersLoader ()
     : current_directory (std::filesystem::path (R"(C:\Users\jamee\Desktop\C++\Araxxi-Chest-Simulator\Monsters)")),
       drop_regex (R"(^(\w+) ([1-4]) (?:([1-9]{1}[0-9]*)(?:[-]([1-9]{1}[0-9]*))?) ([1-9]{1}[0-9]*)\/([1-9][0-9]*)\s*$)")
 {
 
 }
-const DropsLoader &DropsLoader::get_instance ()
+const MonstersLoader &MonstersLoader::get_instance ()
 {
   if (instance == nullptr)
     {
-      instance = new DropsLoader ();
+      instance = new MonstersLoader ();
     }
   return *instance;
 }
-DropsLoader::~DropsLoader ()
+MonstersLoader::~MonstersLoader ()
 {
   delete instance;
 }
-void DropsLoader::get_monster_name (const std::filesystem::directory_entry
+void MonstersLoader::get_monster_name (const std::filesystem::directory_entry
                                     &directory_entry, std::string &monster_name)
 {
   size_t prefix_under_score;
@@ -44,7 +43,7 @@ void DropsLoader::get_monster_name (const std::filesystem::directory_entry
 void debug_print_drops ()
 {
   int counter = 1;
-  for (const auto &ptr : DropsLoader::drop_tables)
+  for (const auto &ptr : MonstersLoader::drop_tables)
     {
       if (!(*ptr)->empty ())
         std::cout << "Table #" << counter << std::endl;
@@ -60,7 +59,7 @@ void debug_print_drops ()
 }
 #endif
 void
-DropsLoader::retrieve_monster_drops (const std::filesystem::directory_entry &entry, std::string &drop_line)
+MonstersLoader::retrieve_monster_drops (const std::filesystem::directory_entry &entry, std::string &drop_line)
 {
   instance->file_reader.open (entry.path ());
   if (instance->file_reader.is_open ())
@@ -78,7 +77,7 @@ DropsLoader::retrieve_monster_drops (const std::filesystem::directory_entry &ent
 #endif
     }
 }
-void DropsLoader::load_monster_drops ()
+void MonstersLoader::load_monster_drops ()
 {
   std::string monster_name, drop_line;
   for (const auto &entry : std::filesystem::directory_iterator (instance->current_directory))
@@ -91,7 +90,7 @@ void DropsLoader::load_monster_drops ()
         }
     }
 }
-void DropsLoader::retrieve_drop_data (const std::string &line)
+void MonstersLoader::retrieve_drop_data (const std::string &line)
 {
   if (!instance->unparsed_regex_results.empty ())
     {
@@ -112,7 +111,7 @@ void DropsLoader::retrieve_drop_data (const std::string &line)
 #endif
   throw std::invalid_argument ("Error: bad drop line in the drop file.");
 }
-void DropsLoader::filter_under_scores (std::string &str)
+void MonstersLoader::filter_under_scores (std::string &str)
 {
   size_t under_score_pos;
   while ((under_score_pos = str.find ('_')) != std::string::npos)
@@ -120,7 +119,7 @@ void DropsLoader::filter_under_scores (std::string &str)
       str.replace (under_score_pos, 1, " ");
     }
 }
-void DropsLoader::create_drop (const bool &is_ranged_quantity)
+void MonstersLoader::create_drop (const bool &is_ranged_quantity)
 {
   std::set<Drop> *table_set = *drop_tables[std::stoi (instance->unparsed_regex_results[TABLE_ID])];
   std::vector<std::string> &matched_results = instance->unparsed_regex_results;
@@ -133,7 +132,7 @@ void DropsLoader::create_drop (const bool &is_ranged_quantity)
                               / std::stof (instance->unparsed_regex_results[DROP_CHANCE_DOWN]));
   table_set->emplace (generated_drop);
 }
-void DropsLoader::parse_regex_groups ()
+void MonstersLoader::parse_regex_groups ()
 {
   filter_under_scores (instance->unparsed_regex_results[DROP_NAME]);
   create_drop (!instance->unparsed_regex_results[DROP_QUANTITY_MAX].empty ());

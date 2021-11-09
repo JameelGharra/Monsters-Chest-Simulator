@@ -12,19 +12,15 @@
 
 class RandomGenerator {
  private:
-  static RandomGenerator *instance;
+  inline static RandomGenerator *instance = nullptr;
   std::random_device rd_generator;
   std::mt19937 engine = std::mt19937 (rd_generator ());
- public:
-  static RandomGenerator *get_instance ()
-  {
-    if (instance == nullptr)
-      {
-        instance = new RandomGenerator ();
-      }
-    return instance;
+
+  RandomGenerator() = default;
+  ~RandomGenerator() {
+    delete instance;
   }
-  static std::set<const Drop *> roll_table (std::set<Drop> *&table)
+  static std::set<const Drop *> roll_table (const std::set<Drop>* const &table)
   {
     std::set<const Drop *> drop_results;
     bool roll_result;
@@ -38,7 +34,18 @@ class RandomGenerator {
             drop_results.insert (&item);
           }
       }
-    return drop_results;
+    return std::move(drop_results);
+  }
+ public:
+  static RandomGenerator *get_instance() {
+    if(instance == nullptr) {
+      instance = new RandomGenerator();
+    }
+    return instance;
+  }
+  void operator=(const RandomGenerator &other) = delete;
+  std::set<const Drop*> operator()(const std::set<Drop>* const &table) const {
+    return roll_table (table);
   }
 };
 #endif

@@ -1,11 +1,13 @@
 /**
- * DropsLoader: responsible to retrieve all the drop rates for each
- * monster if available and found in the directory.
+ * MonstersLoader: responsible to retrieve all the drop rates for each
+ * monster and load them to a monster object (possibly a preloaded monster
+ * if found).
  */
 
-#ifndef DROPSLOADER_H
-#define DROPSLOADER_H
+#ifndef MONSTERSLOADER_H
+#define MONSTERSLOADER_H
 
+#include <iostream>
 #include <filesystem>
 #include <set>
 #include <vector>
@@ -13,9 +15,9 @@
 #include <regex>
 #include "../Monsters/Monster.h"
 
-class DropsLoader {
+class MonstersLoader {
  private:
-  static DropsLoader* instance;
+  static MonstersLoader* instance;
   const std::filesystem::path current_directory;
   const std::string msg_bad_alloc = "Error: Bad memory allocation.";
   const std::string file_prefix = "Drops_";
@@ -31,8 +33,8 @@ class DropsLoader {
     &current_unique_drops, &current_food_drops
   };
 
-  DropsLoader ();
-  ~DropsLoader();
+  MonstersLoader ();
+  ~MonstersLoader();
   static void filter_under_scores(std::string &str);
   static void get_monster_name(const std::filesystem::directory_entry &entry, std::string &monster_name);
   static void retrieve_monster_drops(const std::filesystem::directory_entry &entry, std::string &drop_line);
@@ -49,16 +51,8 @@ class DropsLoader {
   };
  public:
   static void load_monster_drops();
-
-  enum preloaded_monsters_id {
-      MONSTER_ARAXXI,
-      MONSTER_UNKNOWN
-  };
-  const std::vector<std::string> preloaded_monster = {
-      "Araxxi"
-  };
-  void operator= (const DropsLoader &other) = delete;
-  static const DropsLoader &get_instance ();
+  void operator= (const MonstersLoader &other) = delete;
+  static const MonstersLoader &get_instance ();
   friend void debug_print_drops();
 };
 

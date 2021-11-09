@@ -1,39 +1,24 @@
-/**
- * MonsterFactory.cpp: matches the right type for each monster.
- */
+#include "MonsterFactory.h"
 
-#include "Monster.h"
-#include "../Parser/DropsLoader.h"
-//#include "Araxxi.cpp"
+const MonsterFactory *MonsterFactory::instance = nullptr;
 
-class MonsterFactory {
- private:
-  static DropsLoader::preloaded_monsters_id
-  map_monster (const std::string &monster_name)
-  {
-    const DropsLoader &loader = DropsLoader::get_instance ();
-    if (monster_name == loader.preloaded_monster[loader.MONSTER_ARAXXI])
-      {
-        return loader.MONSTER_ARAXXI;
-      }
-    return loader.MONSTER_UNKNOWN;
-  }
- public:
-  explicit MonsterFactory (const std::string &monster_name,
-                           Monster &current_monster)
-  {
-    switch (map_monster (monster_name))
-      {
-        case DropsLoader::MONSTER_ARAXXI:
-          {
-        //    current_monster = Araxxi();
-            break;
-          }
-        case DropsLoader::MONSTER_UNKNOWN:
-          {
+const MonsterFactory *MonsterFactory::get_instance ()
+{
+  if (instance == nullptr)
+    {
+      instance = new MonsterFactory ();
+    }
+  return instance;
+}
 
-          }
-      }
-  }
-};
-
+Monster *MonsterFactory::create_monster (const std::string &monster_name)
+{
+  if (monster_name == instance->preloaded_monster_name[MONSTER_ARAXXI])
+    {
+      return new Araxxi();
+    }
+  else
+    {
+      return Monster();
+    }
+}

@@ -4,12 +4,12 @@
  */
 
 #include "Monster.h"
- class Araxxi: public Monster {
+ struct Araxxi: public Monster {
   public:
    Araxxi() {
 
    }
-  std::set<Item> roll_drop() override {
+  std::set<Drop> roll_drop() override {
 
   }
  };
