@@ -3,7 +3,7 @@
  * RuneScape 3.
  */
 
-#include "Monster.h"
+/*#include "Monster.h"
  struct Araxxi: public Monster {
   public:
    Araxxi() {
@@ -12,4 +12,4 @@
   std::set<Drop> roll_drop() override {
 
   }
- };
+ };*/

@@ -15,7 +15,14 @@ Monster *MonsterFactory::create_monster (const std::string &monster_name)
 {
   if (monster_name == instance->preloaded_monster_name[MONSTER_ARAXXI])
     {
-      return new Araxxi();
+      //return new Araxxi();
+      return new Monster(
+          false,
+          MonstersLoader::current_guaranteed_drops,
+          MonstersLoader::current_food_drops,
+          MonstersLoader::current_main_drops,
+          MonstersLoader::current_unique_drops
+      );
     }
   else
     {

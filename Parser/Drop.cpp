@@ -2,6 +2,9 @@
  * Drop.cpp: represents a drop for a monster.
  */
 
+#ifndef DROP_H
+#define DROP_H
+
 #include <string>
 struct Drop {
     const std::string name;
@@ -21,3 +24,4 @@ struct Drop {
       return this->name.compare(other.name) < 0 ;
     }
 };
+#endif

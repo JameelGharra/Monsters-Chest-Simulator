@@ -22,8 +22,8 @@ struct Monster {
     const std::set<Drop> *const main_drops;
     const std::set<Drop> *const unique_drops;
 
-    Monster (const bool &enraged, const auto* const &guaranteed_drops, const auto* const &food_drops,
-             const auto* const &main_drops, const auto* const &unique_drops);
+    Monster (const bool &enraged, const std::set<Drop>* const &guaranteed_drops, const std::set<Drop>* const &food_drops,
+             const std::set<Drop>* const &main_drops, const std::set<Drop>* const &unique_drops);
     virtual std::set<const Drop*> roll_drop ();
 };
 #endif
