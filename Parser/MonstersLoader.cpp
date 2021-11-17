@@ -9,18 +9,21 @@ MonstersLoader *MonstersLoader::instance = nullptr;
  */
 MonstersLoader::MonstersLoader ()
     : current_directory (std::filesystem::path (R"(C:\Users\jamee\Desktop\C++\Araxxi-Chest-Simulator\Monsters)")),
-      drop_regex (R"(^(\w+) ([1-4]) (?:([1-9]{1}[0-9]*)(?:[-]([1-9]{1}[0-9]*))?) ([1-9]{1}[0-9]*)\/([1-9][0-9]*)\s*$)")
+      drop_regex (R"(^(\w+) ([1-4]) (?:([1-9]{1}[0-9]*)(?:[-]([1-9]{1}[0-9]*))?) ([1-9]{1}[0-9]*)\/([1-9][0-9]*)\s*$)"),
+
 {
 
 }
-const MonstersLoader &MonstersLoader::get_instance ()
+const MonstersLoader *MonstersLoader::get_instance ()
 {
   if (instance == nullptr)
     {
       instance = new MonstersLoader ();
     }
-  return *instance;
+  return instance;
 }
+
+/* Engineer ->  */
 MonstersLoader::~MonstersLoader ()
 {
   delete instance;

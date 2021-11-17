@@ -22,6 +22,7 @@ class MonsterFactory {
   MonsterFactory() = default;
   ~MonsterFactory() = default;
   const static MonsterFactory* instance;
+
  public:
   static Monster *create_monster(const std::string &monster_name);
   const static MonsterFactory *get_instance();

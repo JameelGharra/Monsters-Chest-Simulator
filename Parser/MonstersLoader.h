@@ -7,6 +7,8 @@
 #ifndef MONSTERSLOADER_H
 #define MONSTERSLOADER_H
 
+#define DEBUG_VERBOSE
+
 #include <iostream>
 #include <filesystem>
 #include <set>
@@ -14,6 +16,7 @@
 #include <fstream>
 #include <regex>
 #include "../Monsters/Monster.h"
+//#include "../Monsters/MonsterFactory.h"
 
 class MonstersLoader {
  private:
@@ -32,7 +35,6 @@ class MonstersLoader {
     &current_guaranteed_drops, &current_main_drops,
     &current_unique_drops, &current_food_drops
   };
-
   MonstersLoader ();
   ~MonstersLoader();
   static void filter_under_scores(std::string &str);
@@ -49,11 +51,14 @@ class MonstersLoader {
       DROP_CHANCE_TOP,
       DROP_CHANCE_DOWN
   };
+  friend class MonsterFactory;
  public:
   static void load_monster_drops();
   void operator= (const MonstersLoader &other) = delete;
-  static const MonstersLoader &get_instance ();
+  static const MonstersLoader *get_instance ();
+#if defined DEBUG_VERBOSE
   friend void debug_print_drops();
+#endif
 };
 
 #endif

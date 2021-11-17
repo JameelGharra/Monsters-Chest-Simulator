@@ -44,6 +44,7 @@ class RandomGenerator {
     return instance;
   }
   void operator=(const RandomGenerator &other) = delete;
+
   std::set<const Drop*> operator()(const std::set<Drop>* const &table) const {
     return roll_table (table);
   }

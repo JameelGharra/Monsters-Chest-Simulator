@@ -19,6 +19,12 @@ Monster *MonsterFactory::create_monster (const std::string &monster_name)
     }
   else
     {
-      return Monster();
+      return new Monster(
+                        false,
+                        MonstersLoader::current_guaranteed_drops,
+                         MonstersLoader::current_food_drops,
+                         MonstersLoader::current_main_drops,
+                         MonstersLoader::current_unique_drops
+                         );
     }
 }
